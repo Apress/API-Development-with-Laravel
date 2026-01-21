@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> @yield('title')</title>
+</head>
+<body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f7f7f7;">
+  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#f7f7f7">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="margin: 30px auto; border-radius: 8px; overflow: hidden;">
+
+          <!-- Header -->
+          <tr style="background-color: #004aad;">
+            <td align="center" style="padding: 20px;">
+              <img src="{{ asset('img/dexy-pay-logo.png') }}" alt="Company Logo" width="150" style="display: block; margin-bottom: 10px;" />
+              <h1 style="color: #ffffff; margin: 0; font-size: 24px;">@yield('subject')</h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+
+           @yield('content')
+
+          <!-- Footer -->
+          <tr style="background-color: #f1f1f1;">
+            <td align="center" style="padding: 20px; font-size: 12px; color: #888888;">
+              <p style="margin: 5px 0;">&copy; 2025 Dexy Pay. All rights reserved.</p>
+              <p style="margin: 5px 0;">
+                <a href="#" style="color: #888888; text-decoration: underline;">Unsubscribe</a> |
+                <a href="#" style="color: #888888; text-decoration: underline;">Privacy Policy</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+
+

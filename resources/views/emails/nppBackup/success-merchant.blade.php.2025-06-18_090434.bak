@@ -1,0 +1,30 @@
+@extends('emails.base')
+@section('title','Payment Notification')
+@section('content')
+<h4 align="center"><u>{{$subject}}</u></h4><br>
+<p><b>Hi, {{$email}}</b>,</p><br>
+ <p>You just received a payment of USD{{$amount}}.</p>
+ <p><em>Note: Please verify the payment before giving value</em></p>
+ <p>Click <a href="/auth">here</a> to visit your <b>Dexy Pay</b> dashboard</p>
+ <p>Reference ID: {{$refid}}</p>
+
+
+
+           <tr>
+            <td style="padding: 30px; color: #333333;">
+              <p style="font-size: 16px;">Hi, {{$email}}<p>
+              <p style="font-size: 16px;">
+                You just received a payment of USD{{$amount}}.<br>
+                <em>Note: Please verify the payment before giving value</em>
+              </p>
+              <p style="text-align: center; margin: 30px 0;">
+                <a href="{{ route('do.auth') }}" style="background-color: #007BFF; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">
+                  Visit Your Dashboard
+                </a>
+              </p>
+              <p style="font-size: 14px; color: #666;">
+                If you have any question, please contact us: merchant.emquiry@dexypay.com
+              </p>
+            </td>
+          </tr>
+ @endsection

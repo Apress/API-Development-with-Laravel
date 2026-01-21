@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dexy Pay - Payment Form</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+
+
+    <!-- STYLE TO IMPORT TO YOUR PROJECT -->
+    <link href="{{ asset('css/paytForm/bank-card.css') }}" rel="stylesheet">
+    <!-- STYLE TO IMPORT TO YOUR PROJECT -->
+
+</head>
+<style>
+
+.centered-div {
+    width:320px;
+    margin-right: auto;
+    margin-left: auto;
+
+}
+    </style>
+<body>
+
+<div  class="centered-div" >
+<img alt=""   class="" src="{{ asset('img/payment/dexypay.png')}}"  style="width:320px; height:auto; margin-right: auto;
+    margin-left: auto; ">
+
+<div  class="card">
+
+    <p  align="center" style="color:blue; ">You Are About To Make A Payment To <b>Treant Ltd</b></p>
+    <h3  align="center" >Amount: <em style="color:green; ">USD @if(isset($amount)){{number_format($amount,2)}} @else 10,000 @endif</em></h3>
+    <p  align="center" >To complete this payment, Please enter your payment details below and click the PAY button</p></br>
+    </div>
+
+<!-- PART TO COPY TO YOUR PROJECT -->
+<div class="card">
+    <div class="card-front card-part" id="card-front">
+        <img alt="" class="card-front-square card-square" src="{{ asset('assets/icons/sim-card-chip.png')}}">
+        <img alt="" class="card-front-square card-square" src="{{ asset('assets/icons/contactless-payment-white.png')}}"/>
+        <img alt="" class="card-front-logo card-logo" src="{{ asset('assets/logos/22.svg')}}">
+        <p class="card-number" id="card-number">**** **** **** ****</p>
+        <div class="card-space-75">
+            <span class="card-label">Card holder</span>
+            <p class="card-info" id="card-holder">Your name here</p>
+        </div>
+        <div class="card-space-25">
+            <span class="card-label">Expires</span>
+            <p class="card-info" id="card-expires-date">**/**</p>
+        </div>
+    </div>
+
+    <div class="card-back card-part" id="card-back">
+        <div class="card-black-line"></div>
+        <div class="card-back-content">
+            <div class="card-secret">
+                <p class="card-secret--last" id="card-secret-cvc">***</p>
+            </div>
+            <img alt="" class="card-back-logo card-logo" src="{{ asset('assets/logos/22.svg')}}">
+        </div>
+    </div>
+</div>
+<div>
+    <form action="/api/v1/payment/charge" method = "post">
+        @csrf
+        <div class="row">
+            <label>Card holder :</label>
+            <input id="card-holder-input" placeholder="Card holder name" type="text"  name="card_name" required>
+            @error('card_name'){{$message}}@enderror
+        </div>
+        <div class="row">
+            <label>Card number :</label>
+            <input id="card-number-input" maxlength="19" minlength="19" placeholder="Card number" type="text"  name="card_num" required>
+            @error('card_num'){{$message}}@enderror
+
+        </div>
+        <div class="row">
+            <div class="col-50">
+                <label>Expires :</label>
+                <input id="card-expires-date-input" max="1299" maxlength="5" minlength="5" placeholder="Expires"
+                       type="text"  name="card_exp" required>
+                       @error('card_exp'){{$message}}@enderror
+
+            </div>
+            <div class="col-50">
+                <label>CVC :</label>
+                <input id="card-secret-cvc-input" max="999" maxlength="4" min="100" minlength="4" placeholder="CVC"
+                       type="text" name="card_secret" required>
+                       @error('card_secret'){{$message}}@enderror
+
+            </div>
+        </div>
+
+        <input type="hidden" value="card" name="payment_method" />
+        <input type="hidden" value="@if(isset($amount)){{$amount}} @endif" name="amount" />
+        <input type="hidden" value="@if(isset($transaction_ref)){{$transaction_ref}} @endif" name="transaction_ref" />
+        <input type="hidden" value="USD" name="currency_code" />
+        <input type="hidden" value="0" name="direct_charge" />
+
+        @error('payment_method'){{$message}}@enderror
+        @error('amount'){{$message}}@enderror
+        @error('transaction_ref'){{$message}}@enderror
+        @error('currency_code'){{$message}}@enderror
+
+
+
+
+
+    </br>
+        <div class="row">
+            <input id="submit" value="PAY" type="submit">
+        </div>
+
+
+    </form>
+</div>
+<!-- PART TO COPY TO YOUR PROJECT -->
+
+<!-- SCRIPT TO IMPORT TO YOUR PROJECT -->
+<script src="{{ asset('js/paytForm/bank-card.js')}}"></script>
+
+<!-- SCRIPT TO IMPORT TO YOUR PROJECT -->
+
+</div>
+</body>
+</html>

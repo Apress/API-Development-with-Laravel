@@ -1,0 +1,185 @@
+<!--resources/views/dashboard/home.blade.php-->
+@extends('dashboard.base')
+@section('title', 'Home Page')
+@section('sign', $sign)
+@section('name', $name)
+@section('url', $url)
+@section('content')
+<div class="tabs">
+   <input type="radio" name="tabs" id="tabone" @if($paged['name'] == 'transactions')checked="checked"@endif>
+   <label for="tabone"><a href="/home/pages/transactions/get">Transactions</a></label>
+   <div class="tab">
+      <h4 style = "color:green;" >Balance: <em> @if(isset($paged['data']['bal'])) {{$paged['data']['currency']}} {{ number_format($paged['data']['bal'], 2) }} @endif</em></h4>
+      <h4  align ="center" >Transactions</h4>
+      <br>
+      @isset($paged['data']['txns'])
+           <table>
+          <thead>
+          <tr>
+            <th>SN.</th>
+            <th>Email</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+          </thead>
+          <tbody>
+
+         @foreach ($paged['data']['txns'] as $txn)
+            <tr>
+              <td>{{ ++$paged['data']['cnt'] }}</td>
+              <td>{{ $txn->email}}</td>
+              <td>USD {{ number_format($txn->amount, 2) }}</td>
+              <td>{{ $txn->status }}</td>
+              <td>{{ $txn->updated_at }}</td>
+            </tr>
+         @endforeach
+          </tbody>
+        </table>
+         {{ $paged['data']['txns'] }}
+      @endisset
+      @if(!isset($paged['data']['txns']))
+      <p align ="center" >No Transaction Yet</p>
+      @endif
+
+   </div>
+   <input type="radio" name="tabs" id="tabtwo" @if($paged['name'] == 'tokens')checked="checked"@endif>
+   <label for="tabtwo"><a href="/home/pages/tokens">Manage Keys (Tokens)</a></label>
+   <div class="tab">
+      <h4 align ="center" >Manage Keys (Tokens)</h4>
+      <br/>
+      <section>
+         <b>Secret Key: </b><br/>
+         <div class="row">
+            <div class="col"><input id="skey" type="text" placeholder="No secret key Generated Yet" disabled @isset($paged['data']['secret']) value="{{$paged['data']['secret']}}"@endisset ></div>
+            <div class="col-3">
+               <input type="reset" id="copyskey" value="Copy Key" >
+            </div>
+
+         </div>
+         <hr>
+         <b>Public Key: </b><br/>
+         <div class="row">
+            <div class="col"><input id="pkey" type="text" placeholder="No public key Generated Yet" disabled  @isset($paged['data']['secret']) value="{{$paged['data']['public']}}"@endisset ></div>
+            <div class="col-3">
+               <input type="reset" id="copypkey" value="Copy Key" >
+            </div>
+
+         </div>
+         <br><br>
+         <div class="row" >
+            <div class="col">
+               <form  action = "/home/pages/tokens/regen" method = "post">
+               @csrf
+                  <a ><input id="submitskey" type="submit" value="Generate New Keys">
+                  </a>
+
+               </form>
+            </div>
+         </div>
+     </section>
+   </div>
+   <input type="radio" name="tabs" id="tabthree" @if($paged['name'] == 'bank')checked="checked"@endif >
+   <label for="tabthree"><a href="/home/pages/bank/get">Bank Details</a></label>
+   <div class="tab">
+      <h4 align ="center" >Bank Details</h4>
+      <br/>
+      <section>
+         <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+               <form   action = "/home/pages/bank/post" method = "post">
+               @csrf
+                  <label ></label>
+                  <label for="iban">IBAN Code</label>
+                  <input id="iban" type="text"  name="iban"  placeholder="your IBAN code?" value = "@isset($paged['data']['iban']) {{$paged['data']['iban']}} @endisset" >
+                  <label for="swift">SWIFT Code</label>
+                  <input id="swift" type="text"  name="swift"  placeholder="your SWIFT code?" value = "@isset($paged['data']['swift']) {{$paged['data']['swift']}} @endisset">
+                  <br/><br/>
+                  <input id="submitbank" type="submit" value="Save">
+               </form>
+            </div>
+            <div class="col-3"></div>
+         </div>
+      </section>
+   </div>
+   <input type="radio" name="tabs" id="tabfour" @if($paged['name'] == 'withdrawal')checked="checked"@endif >
+   <label for="tabfour"><a href="/home/pages/withdrawal/get">Withdrawal</a></label>
+   <div class="tab">
+      <h4 style = "color:green;" >Balance: <em> @if(isset($paged['data']['bal'])) {{$paged['data']['currency']}} {{ number_format($paged['data']['bal'], 2) }} @endif</em></h4>
+
+
+      <section>
+         <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+               <form   action = "/home/pages/withdrawal/post" method = "post">
+               @csrf
+                  <label ></label>
+                  <label for="amt2withdraw">Amount</label>
+                  <input id="amt2withdraw" type="number"  name="amt2withdraw" step="0.01" placeholder="Enter Amount To Withdraw?">
+
+                  <br/><br/>
+                  <input id="withdraw" type="submit" value="Withdraw">
+               </form>
+            </div>
+            <div class="col-3"></div>
+         </div>
+      </section>
+
+
+      <h4 align ="center" >Withdrawals</h4>
+      <br>
+      @isset($paged['data']['withdrawals'])
+           <table>
+          <thead>
+          <tr>
+            <th>SN.</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+          </thead>
+          <tbody>
+
+         @foreach ($paged['data']['withdrawals'] as $withdrawal)
+            <tr>
+              <td>{{ ++$paged['data']['cnt'] }}</td>
+              <td>USD {{ number_format($withdrawal->amount, 2) }}</td>
+              <td>{{ $withdrawal->status }}</td>
+              <td>{{ $withdrawal->updated_at }}</td>
+            </tr>
+         @endforeach
+          </tbody>
+        </table>
+         {{ $paged['data']['withdrawals'] }}
+      @endisset
+      @if(!isset($paged['data']['withdrawals']))
+      <p align ="center" >No Withdrawal Yet</p>
+      @endif
+   </div>
+   <input type="radio" name="tabs" id="tabfive" @if($paged['name'] == 'settings')checked="checked"@endif>
+   <label for="tabfive"><a href="/home/pages/settings">Settings</a></label>
+   <div class="tab">
+      <h4 align ="center" >Settings</h4>
+      <section>
+         <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+               <form >
+               @csrf
+                  <label ></label>
+                  <label for="webhookurl">Enter Your Web-Hook URL <span data-tooltip="URL pointinting to a script on your server that will be called and passed relevant data whenever you are paid.">🛈</span></label>
+                  <input id="webhookurl" name="webhookurl"  type="url" placeholder="your  Web-Hook URL?">
+                  <label for="whsecret">Enter Your Web-Hook secret <span data-tooltip="Any alpha-numeric string that'll be used as a secret for securing your Web-Hook.">🛈</span></label>
+                  <input id="whsecret" name="whsecret" type="text" placeholder="your  Web-Hook secret?">
+                  <br/><br/>
+                  <input id="submit" type="submit" value="Save">
+               </form>
+            </div>
+            <div class="col-3"></div>
+         </div>
+      </section>
+   </div>
+</div>
+@endsection

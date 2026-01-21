@@ -1,0 +1,22 @@
+@extends('emails.base')
+@section('title','Login Request')
+@section('subject', 'Secure Login')
+@section('content')
+          <tr>
+              <td style="padding: 30px; color: #333333;">
+              <p style="font-size: 16px;">Hello,</p>
+              <p style="font-size: 16px;">
+                Use the link below to log in securely to your account. This link is valid for one-time use only and will expire in 15 minutes.
+              </p>
+              <p style="text-align: center; margin: 30px 0;">
+                <a href="{{ $link }}" style="background-color: #007BFF; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold;">
+                  Log In Now
+                </a>
+              </p>
+              <p style="font-size: 14px; color: #666;">
+                If you did not request this login, please ignore this email.
+              </p>
+            </td>
+          </tr>
+ @endsection
+

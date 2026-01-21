@@ -1,0 +1,32 @@
+<?php
+
+//routes/api.php
+
+use App\Http\Controllers\Api\V1\PaymentController;
+use App\Http\Controllers\Api\V1\TransactionController;
+use App\Http\Controllers\Api\V1\WalletController;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
+
+    // Routes that only require authentication
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+
+        Route::get('/transaction/{id}', [TransactionController::class, 'getTransaction'])->name('transaction.get');
+        Route::get('/transactions', [TransactionController::class, 'getTransactions'])->name('transactions.get');
+        Route::get('/wallet/balance', [WalletController::class, 'getWalletBalance'])->name('wallet.get');
+
+        // Routes that also require the 'secret' ability
+        Route::middleware('abilities:secret')->group(function () {
+            Route::get('/transaction/verify/{id}', [TransactionController::class, 'verifyTransaction'])->name('transaction.verify');
+            Route::post('/payment/initiate', [TransactionController::class, 'initTransaction'])->name('payment.init');
+            Route::post('/wallet/withdraw', [WalletController::class, 'withdrawFund'])->name('wallet.withdraw');
+        });
+
+    });
+
+    // Public route
+    Route::post('/payment/charge', [PaymentController::class, 'processPayment'])->name('payment.charge');
+});

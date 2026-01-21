@@ -1,0 +1,11 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    $sign = 'Login';
+    $name = 'Guest';
+    $url = '/auth';
+
+    return view('dashboard.welcome', compact('sign', 'name', 'url'));
+})->name('welcome');

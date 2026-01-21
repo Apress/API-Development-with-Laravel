@@ -1,0 +1,46 @@
+<!--resources/views/dashboard/welcome.blade.php-->
+@extends('dashboard.base')
+@extends('dashboard.base')
+@section('title', 'Welcome Page')
+@section('sign', $sign)
+@section('name', $name)
+@section('url', $url)
+@section('content')
+<section>
+   <p><b> Dexy Pay<sup>TM</sup></b> Payment Processing API makes receiving payments online super simple. </p>
+   <button type="button">Get Started</button>
+   <img src="{{ asset('img/dashboard-hero.jpg') }}" alt="An image">
+   <div class="row">
+      <div class="col">
+         <div class="card">
+            <img src="{{ asset('img/multi-device1.jpg') }}">
+            <p>Let's help you recieve payments via your online channels - website, web app, android & ios app, desktop app etc.</p>
+            <button type="button">Get Started</button>
+         </div>
+      </div>
+      <div class="col">
+         <div class="card">
+            <img src="{{ asset('img/secure-payment1.jpg') }}">
+            <p>A Secure Payment Processing System you can Trust</p>
+            <button type="button">Get Started</button>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col">
+         <div class="card">
+            <img src="{{ asset('img/easy-integration.jpg') }}">
+            <p>Dexy Pay API is Easy to Integrate.</p>
+            <button type="button">Get Started</button>
+         </div>
+      </div>
+      <div class="col">
+         <div class="card">
+            <img src="{{ asset('img/dev-community.jpg') }}">
+            <p>Our API is Well Documented and backed by A Friendly Developer Community</p>
+            <button type="button">Get Started</button>
+         </div>
+      </div>
+   </div>
+</section>
+@endsection

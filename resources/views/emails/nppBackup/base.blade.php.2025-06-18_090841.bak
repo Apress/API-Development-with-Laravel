@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>@yield('title')</title>
+  <meta name="author" content="Dexy Pay">
+  <link rel="icon" type="image/png" href="https://classless.de/favicon.png" sizes="any">
+  <link rel="stylesheet" href="{{ asset('css/dashboard/classless.css') }}">
+  </head>
+
+<body>
+
+<div class="card">
+ <img src="http://localhost/img/dexypayLogo.png" style=""><hr>
+ @yield('content')
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+@extends('emails.base')
+@section('title','Payment Receipt Notification')
+@section('content')
+<h4 align="center"><u>{{$subject}}</u></h4><br>
+ <p><b>Hi, {{$email}}</b>,</p><br>
+ <p>You have successfully made a payment of USD{{$amount}}.</p>
+ <p>Reference ID: {{$refid}}</p>
+@endsection
+
+
+@extends('emails.base')
+@section('title','Payment Receipt Notification')
+@section('subject', $subject)
+@section('content')
+           <tr>
+            <td style="padding: 30px; color: #333333;">
+              <p style="font-size: 16px;">Hi, {{$email}}<p>
+              <p style="font-size: 16px;">
+                You have successfully made a payment of <b> USD{{$amount}}</b>.<br><br>
+                <b>Reference ID:</b> {{$refid}}<br><br>
+              </p>
+              <p style="font-size: 14px; color: #666;">
+                If you have any question, please feel free to contact us: payments.emquiry@dexypay.com
+              </p>
+            </td>
+          </tr>
+ @endsection

@@ -1,0 +1,68 @@
+<?php
+//routes/web.php
+use App\Http\Controllers\Auth\AuthController;
+use App\Models\User;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardPages\DashboardPagesController;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+
+
+//For the Welcome page
+Route::get('/', function () {
+    return view('dashboard.welcome', ['sign' => 'Login', 'name' => 'Guest', 'url' => route('display.auth')]);
+})->name('welcome');
+//For the Auth page
+Route::get('/auth', function () {
+    return view('dashboard.auth', ['sign' => 'Login', 'name' => 'Guest', 'url' => route('display.auth')]);
+})->name('display.auth');
+
+//For sending email address to the requestLink()method
+Route::post('/auth', [AuthController::class, 'requestLink'])->name('do.auth');
+
+//For connecting the login link when clicked to the
+//login() method for authentication
+Route::get('/login/{token}', [AuthController::class, 'login'])->name('auth.login');
+
+//Alias for auth.login route
+Route::get('/', function () {
+    return redirect()->route('auth.login');
+})->name('login');
+
+//For the sent_email_notifier page
+Route::get('/sent_email_notifier/{email}', function ($email = 'abc@def.ghi') {
+    return view('dashboard.sent_email_notifier', ['sign' => 'Login', 'name' => 'Guest', 'masked_email' => $email, 'url' => route('display.auth')]);
+})->name('sent_email_notifier');
+
+//The Auth middleware applied to a group of two routes
+Route::middleware('auth')->group(function () {
+
+    //Triggers the logout() method for logging user out
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+    //Targets the Home page. The page where logged in
+    //user are redirected to
+    Route::get('/home/{user}', function (User $user) {
+        return view('dashboard.home', ['sign' => 'Logout', 'name' => $user->email, 'url' => route('auth.logout')]);
+    })->name('home');
+
+    //Can be used to open any of the Dashboard sub pages (Transactions, Manage Keys(Tokens), Transfer, Bank Details, Settings)
+    Route::match(['get', 'post'], '/home/pages/{page}/{action?}', [DashboardPagesController::class, 'index'])->name('home.pages.page');
+
+
+});
+
+
+Route::get('/payment/form', function (Request $request) {
+    //$amt    = $request->query('amt');
+
+    $transaction_ref = $request->query('tx_ref');
+    $amount          = $request->query('amt');
+    return view(
+        'payment.form',
+        compact(
+            'transaction_ref',
+            'amount'
+        )
+    );
+})->name('payment.form')->middleware('signed');

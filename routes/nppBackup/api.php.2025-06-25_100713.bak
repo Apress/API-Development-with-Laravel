@@ -1,0 +1,26 @@
+<?php
+
+//routes/api.php
+
+use App\Http\Controllers\Api\V1\PaymentController;
+use App\Http\Controllers\Api\V1\TransactionController;
+use App\Http\Controllers\Api\V1\WalletController;
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' => 'v1', 'namespace' =>
+    'App\Http\Controllers\Api\V1'], function () {
+
+    Route::group(['middleware' =>
+        'auth:sanctum'], function () {
+        Route::get('/transaction/{id}', [TransactionController::class, 'getTransaction'])->name('transaction.get');
+        Route::get('/transaction/verify/{id}', [TransactionController::class, 'verifyTransaction'])->name('transaction.verify');
+        Route::get('/transactions', [TransactionController::class, 'getTransactions'])->name('transactions.get');
+        Route::post('/payment/initiate', [TransactionController::class, 'initTransaction'])->name('payment.init');
+
+        Route::get('/wallet/balance', [WalletController::class, 'getWalletBalance'])->name('wallet.get');
+        Route::post('/wallet/withdraw', [WalletController::class, 'withdrawFund'])->name('wallet.withdraw');
+    });
+
+    Route::post('/payment/charge', [PaymentController::class, 'processPayment'])->name('payment.charge');
+
+});
